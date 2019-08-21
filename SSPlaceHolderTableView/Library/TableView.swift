@@ -10,12 +10,12 @@ import UIKit
 
 public enum SSPlaceHolderStates {
     case dataAvailable(viewController: UIViewController)
-    case noDataAvailable(noDataImg: UIImage?, noDataLabelTitle: NSAttributedString?)
+    case noDataAvailable(noDataImg: UIImage?, noDataLabelTitle: NSAttributedString?, noDataLabelDescription: NSAttributedString?)
     case noDataAvailableWithCustomView(_ customView: UIView?)
     case loading(loadingImg: UIImage?, loadingLabelTitle: NSAttributedString?)
     case loadingWithCustomView(_ customView: UIView?)
-    case checkInternetAvaibility(noInternetImg: UIImage?, noInternetLabelTitle: NSAttributedString?)
-    case checkInternetAvaibilityCustomView(_ customView: UIView?)
+    case noDataAvailableWithButton(noDataImg: UIImage?, noDataLabelTitle: NSAttributedString?, noDataLabelDescription: NSAttributedString?)
+    case noDataAvailableWithButtonCustomView(_ customView: UIView?)
     case unknown
 }
 
@@ -28,7 +28,7 @@ public class TableView: UITableView {
     
     var objLoadingView: LoadingView?
     var objNoDataView: NoDataView?
-    var objNetworkUnavailableView: NetworkUnavailableView?
+    var objNoDataAvailableWithButtonView: NoDataAvailableWithButtonView?
     var centerOffSetMultiplier: CGFloat? {
         didSet {
             gCenterOffSetMultiplier = centerOffSetMultiplier ?? 0.75
@@ -50,25 +50,25 @@ public class TableView: UITableView {
     private func setUpTableView() {
         objLoadingView = LoadingView.instanceFromNib()
         objNoDataView = NoDataView.instanceFromNib()
-        objNetworkUnavailableView = NetworkUnavailableView.instanceFromNib()
+        objNoDataAvailableWithButtonView = NoDataAvailableWithButtonView.instanceFromNib()
     }
     
     public func setState(_ state: SSPlaceHolderStates) {
         switch state {
         case .dataAvailable(let viewController):
             hideLoadinTableView(controller: viewController)
-        case .noDataAvailable(let noDataImg, let noDataLabelTitle):
-            showNoDataPlaceHolder(noDataImg: noDataImg, noDataLabelTitle: noDataLabelTitle, customView: nil)
+        case .noDataAvailable(let noDataImg, let noDataLabelTitle, let noDataLabelDescription):
+            showNoDataPlaceHolder(noDataImg: noDataImg, noDataLabelTitle: noDataLabelTitle, noDataLabelDescription: noDataLabelDescription, customView: nil)
         case .noDataAvailableWithCustomView(let customView):
-            showNoDataPlaceHolder(noDataImg: nil, noDataLabelTitle: nil, customView: customView)
+            showNoDataPlaceHolder(noDataImg: nil, noDataLabelTitle: nil, noDataLabelDescription: nil, customView: customView)
         case .loading(let img, let title):
             showLoadingTableView(loadingImg: img, loadingLabelTitle: title, customView: nil)
         case .loadingWithCustomView(let customView):
             showLoadingTableView(loadingImg: nil, loadingLabelTitle: nil, customView: customView)
-        case .checkInternetAvaibility(let noInternetImg, let noInternetLabelTitle):
-            checkInternetAndShowView(noInternetImg: noInternetImg, noInternetLabelTitle: noInternetLabelTitle, customView: nil)
-        case .checkInternetAvaibilityCustomView(let customView):
-            checkInternetAndShowView(noInternetImg: nil, noInternetLabelTitle: nil, customView: customView)
+        case .noDataAvailableWithButton(let noDataImg, let noDataLabelTitle, let noDataLabelDescription):
+            showNoDataPlaceHolderWithButton(noDataImg: noDataImg, noDataLabelTitle: noDataLabelTitle, noDataLabelDescription: noDataLabelDescription, customView: nil)
+        case .noDataAvailableWithButtonCustomView(let customView):
+            showNoDataPlaceHolderWithButton(noDataImg: nil, noDataLabelTitle: nil, noDataLabelDescription: nil, customView: customView)
         default: break
             
         }
@@ -91,11 +91,12 @@ public class TableView: UITableView {
         self.reloadData()
     }
     
-    private func showNoDataPlaceHolder(noDataImg: UIImage?, noDataLabelTitle: NSAttributedString?, customView: UIView?) {
+    private func showNoDataPlaceHolder(noDataImg: UIImage?, noDataLabelTitle: NSAttributedString?, noDataLabelDescription: NSAttributedString?, customView: UIView?) {
         if customView != nil {
             self.backgroundView = customView
         } else {
-            objNoDataView?.noDataTitleText = noDataLabelTitle ?? "NO DATA FOUND.".makeAttributedString(font: UIFont.systemFont(ofSize: 25), textColor: .lightGray)
+            objNoDataView?.noDataDescriptionText = noDataLabelDescription ?? "".makeAttributedString(font: objNoDataView?.lblNoDataDesc.font ?? UIFont.systemFont(ofSize: 17.0), textColor: .lightGray)
+            objNoDataView?.noDataTitleText = noDataLabelTitle ?? "".makeAttributedString(font: objNoDataView?.lblNoDataTitle.font ?? UIFont.systemFont(ofSize: 25.0), textColor: .gray)
             let img = UIImage(named: "noData", in: Bundle(identifier: "org.cocoapods.SSPlaceHolderTableView"), compatibleWith: nil)
             objNoDataView?.noDataImg = noDataImg ?? img
             self.backgroundView = objNoDataView
@@ -105,19 +106,24 @@ public class TableView: UITableView {
         self.delegate = nil
     }
     
-    private func checkInternetAndShowView(noInternetImg: UIImage?, noInternetLabelTitle: NSAttributedString?, customView: UIView?) {
-        objNetworkUnavailableView?.noInternetTitleText = noInternetLabelTitle ?? "NO INTERNET".makeAttributedString(font: UIFont.systemFont(ofSize: 25), textColor: .lightGray)
-        let img = UIImage(named: "noInternet", in: Bundle(identifier: "org.cocoapods.SSPlaceHolderTableView"), compatibleWith: nil)
-        objNetworkUnavailableView?.noInternetImg = noInternetImg ?? img
-        objNetworkUnavailableView?.btnTryAgain.addTarget(self, action: #selector(retryButtonTapped(sender:)), for: .touchUpInside)
-        self.backgroundView = objNetworkUnavailableView
-        self.separatorColor = UIColor.clear
-        self.dataSource = nil
-        self.delegate = nil
+    private func showNoDataPlaceHolderWithButton(noDataImg: UIImage?, noDataLabelTitle: NSAttributedString?, noDataLabelDescription: NSAttributedString?, customView: UIView?) {
+        if(customView != nil){
+            self.backgroundView = customView
+        }else{
+            objNoDataAvailableWithButtonView?.noInternetTitleText = noDataLabelTitle ?? "".makeAttributedString(font: UIFont.systemFont(ofSize: 25), textColor: .gray)
+            objNoDataAvailableWithButtonView?.noInternetSubTitleText = noDataLabelDescription ?? "".makeAttributedString(font: objNoDataAvailableWithButtonView?.lblNoInternetSubtitle.font ?? UIFont.systemFont(ofSize: 17.0), textColor: .lightGray)
+            let img = UIImage(named: "noInternet", in: Bundle(identifier: "org.cocoapods.SSPlaceHolderTableView"), compatibleWith: nil)
+            objNoDataAvailableWithButtonView?.noInternetImg = noDataImg ?? img
+            objNoDataAvailableWithButtonView?.btnTryAgain.addTarget(self, action: #selector(retryButtonTapped(sender:)), for: .touchUpInside)
+            self.backgroundView = objNoDataAvailableWithButtonView
+            self.separatorColor = UIColor.clear
+            self.dataSource = nil
+            self.delegate = nil
+        }
     }
-
+    
     @objc func retryButtonTapped(sender: UIButton) {
-//        networkDelegate?.retryNetworkCall()
+        //        networkDelegate?.retryNetworkCall()
         guard let compl = self.networkUnReachableBlock else {
             return
         }

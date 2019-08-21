@@ -12,11 +12,18 @@ public class NoDataView: UIView {
 
     @IBOutlet weak var noDataImage: UIImageView!
     @IBOutlet weak var lblNoDataTitle: UILabel!
+    @IBOutlet weak var lblNoDataDesc: UILabel!
     @IBOutlet weak var constImageCenterOffset: NSLayoutConstraint!
     
     var noDataTitleText: NSAttributedString? {
         didSet {
-           lblNoDataTitle.attributedText = self.noDataTitleText
+            lblNoDataTitle.attributedText = self.noDataTitleText
+        }
+    }
+    
+    var noDataDescriptionText: NSAttributedString? {
+        didSet {
+            lblNoDataDesc.attributedText = self.noDataDescriptionText
         }
     }
     

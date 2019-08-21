@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NetworkUnavailableView: UIView {
+class NoDataAvailableWithButtonView: UIView {
 
     @IBOutlet weak var noInternetImage: UIImageView!
     @IBOutlet weak var lblNoInternetTitle: UILabel!
@@ -34,9 +34,9 @@ class NetworkUnavailableView: UIView {
         }
     }
     
-    class func instanceFromNib() -> NetworkUnavailableView {
+    class func instanceFromNib() -> NoDataAvailableWithButtonView {
         let bundle = Bundle(for: self.classForCoder())
-        let vw = UINib(nibName: "NetworkUnavailableView", bundle: bundle).instantiate(withOwner: nil, options: nil).first as! NetworkUnavailableView
+        let vw = UINib(nibName: "NetworkUnavailableView", bundle: bundle).instantiate(withOwner: nil, options: nil).first as! NoDataAvailableWithButtonView
         return vw
     }
     

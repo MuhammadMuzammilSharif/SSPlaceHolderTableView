@@ -24,7 +24,9 @@ class NoInternetPlaceholder: UIViewController {
         
         /// - parameter noInternetImg: Set Your own No Internet state Image instead use default image.
         /// - parameter noInternetLabelTitle: Set Your own No Internet State title instead use default title.
-         self.tblView.setState(.checkInternetAvaibility(noInternetImg: nil, noInternetLabelTitle: nil))
+         self.tblView.setState(.noDataAvailableWithButton(noDataImg: nil, noDataLabelTitle: NSAttributedString(string: "No Internet!"), noDataLabelDescription: NSAttributedString(string: "Oops!!! its seems that you are not connected to internet.")))
+        
+        self.tblView.objNoDataAvailableWithButtonView?.btnTryAgain?.setTitle("Click Here", for: .normal)
     }
     
     @IBAction func btnActionNoDataAPi(_ sender: Any) {
@@ -58,7 +60,7 @@ extension NoInternetPlaceholder {
                         if arrJson.count > 0 {
                             self.tblView.setState(.dataAvailable(viewController: self))
                         } else {
-                            self.tblView.setState(.noDataAvailable(noDataImg: nil, noDataLabelTitle: nil))
+                            self.tblView.setState(.noDataAvailable(noDataImg: nil, noDataLabelTitle: NSAttributedString(string: "No Data Found. Oh. O!!!"), noDataLabelDescription: NSAttributedString(string: "Oh. O!!! its seems that no data availiable to show")))
                         }
                     }
                 } catch {
@@ -67,7 +69,7 @@ extension NoInternetPlaceholder {
             })
             task.resume()
         } else {
-            self.tblView.setState(.checkInternetAvaibility(noInternetImg: nil, noInternetLabelTitle: nil))
+            self.tblView.setState(.noDataAvailableWithButton(noDataImg: nil, noDataLabelTitle: NSAttributedString(string: "No Internet"), noDataLabelDescription: NSAttributedString(string: "Oops!!! its seems that you are not connected to internet.")))
         }
         
     }

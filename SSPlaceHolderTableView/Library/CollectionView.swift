@@ -12,8 +12,8 @@ public class CollectionView: UICollectionView {
     
     var objLoadingView: LoadingView?
     var objNoDataView: NoDataView?
-    var objNetworkUnavailableView: NetworkUnavailableView?
-    var networkUnReachableBlock: (() -> Void)?
+    var objNoDataAvailableWithButtonView: NoDataAvailableWithButtonView?
+    var onNoDataButtonTouch: (() -> Void)?
 
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -28,25 +28,25 @@ public class CollectionView: UICollectionView {
     private func setUpCollectionView() {
         objLoadingView = LoadingView.instanceFromNib()
         objNoDataView = NoDataView.instanceFromNib()
-        objNetworkUnavailableView = NetworkUnavailableView.instanceFromNib()
+        objNoDataAvailableWithButtonView = NoDataAvailableWithButtonView.instanceFromNib()
     }
     
     public func setState(_ state: SSPlaceHolderStates) {
         switch state {
         case .dataAvailable(let viewController):
             hideLoadinTableView(controller: viewController)
-        case .noDataAvailable(let noDataImg, let noDataLabelTitle):
-            showNoDataPlaceHolder(noDataImg: noDataImg, noDataLabelTitle: noDataLabelTitle, customView: nil)
+        case .noDataAvailable(let noDataImg, let noDataLabelTitle, let noDataLabelDescription):
+            showNoDataPlaceHolder(noDataImg: noDataImg, noDataLabelTitle: noDataLabelTitle, noDataLabelDescription: noDataLabelDescription, customView: nil)
         case .noDataAvailableWithCustomView(let customView):
-            showNoDataPlaceHolder(noDataImg: nil, noDataLabelTitle: nil, customView: customView)
+            showNoDataPlaceHolder(noDataImg: nil, noDataLabelTitle: nil, noDataLabelDescription: nil, customView: customView)
         case .loading(let img, let title):
             showLoadingTableView(loadingImg: img, loadingLabelTitle: title, customView: nil)
         case .loadingWithCustomView(let customView):
             showLoadingTableView(loadingImg: nil, loadingLabelTitle: nil, customView: customView)
-        case .checkInternetAvaibility(let noInternetImg, let noInternetLabelTitle):
-            checkInternetAndShowView(noInternetImg: noInternetImg, noInternetLabelTitle: noInternetLabelTitle, customView: nil)
-        case .checkInternetAvaibilityCustomView(let customView):
-            checkInternetAndShowView(noInternetImg: nil, noInternetLabelTitle: nil, customView: customView)
+        case .noDataAvailableWithButton(let noDataImg, let noDataLabelTitle, let noDataLabelDescription):
+            showNoDataPlaceHolderWithButton(noDataImg: noDataImg, noDataLabelTitle: noDataLabelTitle, noDataLabelDescription: noDataLabelDescription, customView: nil)
+        case .noDataAvailableWithButtonCustomView(let customView):
+            showNoDataPlaceHolderWithButton(noDataImg: nil, noDataLabelTitle: nil, noDataLabelDescription: nil, customView: customView)
         default: break
             
         }
@@ -72,11 +72,12 @@ public class CollectionView: UICollectionView {
         self.reloadData()
     }
     
-    private func showNoDataPlaceHolder(noDataImg: UIImage?, noDataLabelTitle: NSAttributedString?, customView: UIView?) {
+    private func showNoDataPlaceHolder(noDataImg: UIImage?, noDataLabelTitle: NSAttributedString?, noDataLabelDescription: NSAttributedString?,customView: UIView?) {
         if customView != nil {
             self.backgroundView = customView
         } else {
-            objNoDataView?.noDataTitleText = noDataLabelTitle ?? "NO DATA FOUND.".makeAttributedString(font: UIFont.systemFont(ofSize: 25), textColor: .lightGray)
+            objNoDataView?.noDataTitleText = noDataLabelTitle ?? "".makeAttributedString(font: UIFont.systemFont(ofSize: 25), textColor: .lightGray)
+            objNoDataView?.noDataDescriptionText = noDataLabelDescription ?? "".makeAttributedString(font: UIFont.systemFont(ofSize: 25), textColor: .lightGray)
             let img = UIImage(named: "noData", in: Bundle(identifier: "org.cocoapods.SSPlaceHolderTableView"), compatibleWith: nil)
             objNoDataView?.noDataImg = noDataImg ?? img
             self.backgroundView = objNoDataView
@@ -85,22 +86,24 @@ public class CollectionView: UICollectionView {
         self.delegate = nil
     }
     
-    private func checkInternetAndShowView(noInternetImg: UIImage?, noInternetLabelTitle: NSAttributedString?, customView: UIView?) {
+    private func showNoDataPlaceHolderWithButton(noDataImg: UIImage?, noDataLabelTitle: NSAttributedString?, noDataLabelDescription: NSAttributedString?, customView: UIView?) {
         if customView != nil {
             self.backgroundView = customView
         } else {
-            objNetworkUnavailableView?.noInternetTitleText = noInternetLabelTitle ?? "NO    INTERNET".makeAttributedString(font: UIFont.systemFont(ofSize: 25), textColor: .lightGray)
+            objNoDataAvailableWithButtonView?.noInternetTitleText = noDataLabelTitle ?? "".makeAttributedString(font: UIFont.systemFont(ofSize: 25), textColor: .gray)
+            objNoDataAvailableWithButtonView?.noInternetSubTitleText = noDataLabelDescription ?? "".makeAttributedString(font: objNoDataAvailableWithButtonView?.lblNoInternetSubtitle.font ?? UIFont.systemFont(ofSize: 17.0), textColor: .lightGray)
             let img = UIImage(named: "noInternet", in: Bundle(identifier: "org.cocoapods.SSPlaceHolderTableView"), compatibleWith: nil)
-            objNetworkUnavailableView?.noInternetImg = noInternetImg ?? img
-            objNetworkUnavailableView?.btnTryAgain.addTarget(self, action: #selector(retryButtonTapped(sender:)),   for: .touchUpInside)
-            self.backgroundView = objNetworkUnavailableView
+            objNoDataAvailableWithButtonView?.noInternetImg = noDataImg ?? img
+            
+            objNoDataAvailableWithButtonView?.btnTryAgain.addTarget(self, action: #selector(retryButtonTapped(sender:)),   for: .touchUpInside)
+            self.backgroundView = objNoDataAvailableWithButtonView
         }
         self.dataSource = nil
         self.delegate = nil
     }
 
     @objc func retryButtonTapped(sender: UIButton) {
-        guard let compl = self.networkUnReachableBlock else {
+        guard let compl = self.onNoDataButtonTouch else {
             return
         }
         compl()

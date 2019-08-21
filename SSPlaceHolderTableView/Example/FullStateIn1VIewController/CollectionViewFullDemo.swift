@@ -16,7 +16,7 @@ class CollectionViewFullDemo: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.networkUnReachableBlock = {
+        collectionView.onNoDataButtonTouch = {
             // put your network Call here.
             self.callAPI(isForNoData: self.isForNoData)
         }
@@ -52,7 +52,7 @@ extension CollectionViewFullDemo {
                         if arrJson.count > 0 {
                             self.collectionView.setState(.dataAvailable(viewController: self))
                         } else {
-                            self.collectionView.setState(.noDataAvailable(noDataImg: nil, noDataLabelTitle: nil))
+                            self.collectionView.setState(.noDataAvailable(noDataImg: nil, noDataLabelTitle: NSAttributedString(string: "No Data Found. Oh. O!!!"), noDataLabelDescription: NSAttributedString(string: "Oh. O!!! its seems that no data availiable to show")))
                         }
                     }
                 } catch {
@@ -61,7 +61,7 @@ extension CollectionViewFullDemo {
             })
             task.resume()
         } else {
-            self.collectionView.setState(.checkInternetAvaibility(noInternetImg: nil, noInternetLabelTitle: nil))
+            self.collectionView.setState(.noDataAvailableWithButton(noDataImg: nil, noDataLabelTitle: NSAttributedString(string: "No Internet"), noDataLabelDescription: NSAttributedString(string: "Oops!!! its seems that you are not connected to internet.")))
         }
         
     }

@@ -20,6 +20,6 @@ class DataUnAvailablePlaceholderTableView: UIViewController {
         
         /// - parameter noDataImg: Set Your own No Data state Image instead use default image.
         /// - parameter noDataLabelTitle: Set Your own No data State title instead use default title.
-         self.tblView.setState(.noDataAvailable(noDataImg: nil, noDataLabelTitle: nil))
+        self.tblView.setState(.noDataAvailable(noDataImg: nil, noDataLabelTitle: NSAttributedString(string: "No Data Found. Oh. O!!!"), noDataLabelDescription: NSAttributedString(string: "Oh. O!!! its seems that no data availiable to show")))
     }
 }

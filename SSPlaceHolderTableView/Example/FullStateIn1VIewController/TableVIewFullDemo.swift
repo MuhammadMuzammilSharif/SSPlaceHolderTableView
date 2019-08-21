@@ -54,7 +54,7 @@ extension TableVIewFullDemo {
                         if arrJson.count > 0 {
                             self.tblView.setState(.dataAvailable(viewController: self))
                         } else {
-                            self.tblView.setState(.noDataAvailable(noDataImg: nil, noDataLabelTitle: nil))
+                            self.tblView.setState(.noDataAvailable(noDataImg: nil, noDataLabelTitle: NSAttributedString(string: "No Data Found. Oh. O!!!"), noDataLabelDescription: NSAttributedString(string: "Oh. O!!! its seems that no data availiable to show")))
                         }
                     }
                 } catch {
@@ -63,7 +63,7 @@ extension TableVIewFullDemo {
             })
             task.resume()
         } else {
-            self.tblView.setState(.checkInternetAvaibility(noInternetImg: nil, noInternetLabelTitle: nil))
+            self.tblView.setState(.noDataAvailableWithButton(noDataImg: nil, noDataLabelTitle: NSAttributedString(string: "No Internet"), noDataLabelDescription: NSAttributedString(string: "Oops!!! its seems that you are not connected to internet.")))
         }
         
     }

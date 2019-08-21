@@ -27,7 +27,7 @@
 		81539F1B21EF2029003F4F93 /* NoDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81539F1921EF2029003F4F93 /* NoDataView.swift */; };
 		81539F1C21EF204F003F4F93 /* NoDataView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81539F1A21EF2029003F4F93 /* NoDataView.xib */; };
 		8170AB2A21F5BF3B0013C30D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8170AB2921F5BF3B0013C30D /* Extensions.swift */; };
-		81A96F7121F06240002915D4 /* NetworkUnavailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A96F7021F06240002915D4 /* NetworkUnavailableView.swift */; };
+		81A96F7121F06240002915D4 /* NoDataAvailableWithButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A96F7021F06240002915D4 /* NoDataAvailableWithButtonView.swift */; };
 		81A96F7221F077F6002915D4 /* NetworkUnavailableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81A96F6F21F06240002915D4 /* NetworkUnavailableView.xib */; };
 		81A96F7421F1A54F002915D4 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A96F7321F1A54F002915D4 /* CollectionView.swift */; };
 		81A96F7621F1C964002915D4 /* CollectionViewFullDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A96F7521F1C964002915D4 /* CollectionViewFullDemo.swift */; };
@@ -57,7 +57,7 @@
 		81539F1A21EF2029003F4F93 /* NoDataView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoDataView.xib; sourceTree = "<group>"; };
 		8170AB2921F5BF3B0013C30D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		81A96F6F21F06240002915D4 /* NetworkUnavailableView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NetworkUnavailableView.xib; sourceTree = "<group>"; };
-		81A96F7021F06240002915D4 /* NetworkUnavailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkUnavailableView.swift; sourceTree = "<group>"; };
+		81A96F7021F06240002915D4 /* NoDataAvailableWithButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDataAvailableWithButtonView.swift; sourceTree = "<group>"; };
 		81A96F7321F1A54F002915D4 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		81A96F7521F1C964002915D4 /* CollectionViewFullDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewFullDemo.swift; sourceTree = "<group>"; };
 		C60C807B9961F6410C5993E9 /* Pods_SSPlaceHolderTableView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SSPlaceHolderTableView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -168,7 +168,7 @@
 				81A96F7321F1A54F002915D4 /* CollectionView.swift */,
 				81539F1921EF2029003F4F93 /* NoDataView.swift */,
 				81539F1521EF0C51003F4F93 /* LoadingView.swift */,
-				81A96F7021F06240002915D4 /* NetworkUnavailableView.swift */,
+				81A96F7021F06240002915D4 /* NoDataAvailableWithButtonView.swift */,
 				8170AB2921F5BF3B0013C30D /* Extensions.swift */,
 			);
 			path = Library;
@@ -284,7 +284,7 @@
 				811F07A3225B0F8A0054D0C6 /* ExampleListViewController.swift in Sources */,
 				81265DA421E894380001C11B /* TableVIewFullDemo.swift in Sources */,
 				811F07AD225B13710054D0C6 /* NoInternetPlaceholder.swift in Sources */,
-				81A96F7121F06240002915D4 /* NetworkUnavailableView.swift in Sources */,
+				81A96F7121F06240002915D4 /* NoDataAvailableWithButtonView.swift in Sources */,
 				81539F1621EF0C51003F4F93 /* LoadingView.swift in Sources */,
 				8170AB2A21F5BF3B0013C30D /* Extensions.swift in Sources */,
 				81265DB421E89F8F0001C11B /* TableView.swift in Sources */,
@@ -443,7 +443,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Y98X8JAPH6;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SSPlaceHolderTableView/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -463,7 +463,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Y98X8JAPH6;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = SSPlaceHolderTableView/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
